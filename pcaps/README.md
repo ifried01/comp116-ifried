@@ -7,7 +7,7 @@ Assignment 1
 set1.pcap
 
 1. How many packets are there in this set?  
-<p>1503
+      1503
 
 2. What protocol was used to transfer files from PC to server?  
       HTTP
