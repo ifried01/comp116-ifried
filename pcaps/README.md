@@ -6,18 +6,18 @@ Assignment 1
 
 set1.pcap
 
-1. How many packets are there in this set?
-    1503
+1. How many packets are there in this set?  
+      1503
 
-2. What protocol was used to transfer files from PC to server?
-    HTTP
+2. What protocol was used to transfer files from PC to server?  
+      HTTP
 
-3. Briefly describe why the protocol used to transfer the files is insecure?
-    The files transferred are not encrypted by a secure certificate and third parties
-    can therefore intercept information and view it.
+3. Briefly describe why the protocol used to transfer the files is insecure?  
+      The files transferred are not encrypted by a secure certificate and third parties  
+      can therefore intercept information and view it.  
 
-4. What is the secure alternative to the protocol used to transfer files?
-    HTTPS
+4. What is the secure alternative to the protocol used to transfer files?  
+      HTTPS  
 
 5. What is the IP address of the server?
     67.23.79.113
