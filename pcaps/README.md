@@ -52,18 +52,18 @@ set2.pcap
         Searching for the string "pass" in packet details in WireShark.
 
 13. For each of the plaintext username-password pair that you found, identify the protocol used, server IP, the corresponding domain name (e.g., google.com), and port number.
-        chris@digitalinterlude.com
-        Volrathw69 (valid)
-            Protocol: POP
-            Server IP: 75.126.75.131
-            Domain Name: si-sv3231.com
-            Port Number: 110
-        cisco
-        184 yomama1
-            Protocol: TELNET
-            Server IP: 200.60.17.1
-            Domain Name:
-            Port Number: 23
+        chris@digitalinterlude.com  
+        Volrathw69 (valid)  
+            Protocol: POP  
+            Server IP: 75.126.75.131  
+            Domain Name: si-sv3231.com  
+            Port Number: 110  
+        cisco  
+        184 yomama1  
+            Protocol: TELNET  
+            Server IP: 200.60.17.1  
+            Domain Name:  
+            Port Number: 23  
         cisco 
         185 12345d (invalid)
             Protocol: TELNET
