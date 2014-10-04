@@ -7,32 +7,18 @@ Assignment 2 - Alarm
 
 require 'packetfu'
 require 'Slop'
-require 'snort-rule'
 
-# snort rules for visa, mastercard, dicover card, and american Express credit cards
-$visa        = '4\d{3}(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}'
-$master      = '5\d{3}(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}'
-$discover    = '6011(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}'
-$americanExp = '3\d{3}(\s|-)?\d{6}(\s|-)?\d{5}'
-
+# regex for visa, mastercard, dicover card, and american Express credit cards
+$visa        = '/4\d{3}(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}/'
+$master      = '/5\d{3}(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}/'
+$discover    = '/6011(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}/'
+$americanExp = '/3\d{3}(\s|-)?\d{6}(\s|-)?\d{5}/'
+# regex for HTTP 400-499 errors, nmap scans, and Shellcodes
+$HTTP400Err  = 'HTTP\/1.1" 4[0-9][0-9]'
+$nmapScan    = 'Nmap'
+$shellCode   = ''
 # keeps track of how many alerts we have seen (used in raiseAlarm)
 $alarm_instance_number = 1
-
-# read in a web server log instead of live network packets if -r flag is provided
-opts = Slop.parse do
-  banner 'Usage: alarm.rb [options]'
-  on 'r=', 'web_server', 'Read Web Server Log'
-end
-
-# if the -r flag was provided
-if opts.web_server?
-	# web_server_file = opts[:web_server]
-	puts "Running with web server log"
-  analyzeWebServerLog(opts[:web_server])
-else
-	puts "Running live network traffic"
-  analyzeLiveNetworkTraffic()
-end
 
 ''' ~~~~~~~~~~ Functions to analyze the appropriate input ~~~~~~~~~~ '''
 def analyzeLiveNetworkTraffic()
@@ -47,7 +33,7 @@ def analyzeLiveNetworkTraffic()
       # when the 'urg', 'psh', and 'fin' flags are set to 1, it's a XMAS scan
   	  elsif pkt.tcp_flags.urg == 1 and pkt.tcp_flags.fin == 1 and pkt.tcp_flags.psh == 1
 	 	   raiseAlarm('XMAS scan is detected', pkt.ip_saddr, pkt.proto, pkt.payload)
-      else:
+      else
         checkForCreditCards(pkt)
       end
     end
@@ -60,13 +46,43 @@ def checkForCreditCards(pkt)
   end
 end
 
-def analyzeWebServerLog(log)
-
+def analyzeWebServerLog(log_file)
+  File.open(log_file) do |f|
+    f.each_line do |line|
+      line_contents = line.strip.split(' ')
+      payload       = line.strip.split('"')[1]
+      source_IP     = line_contents[0]
+      if line.match($HTTP400Err)
+        raiseAlarm('HTTP error is detected', source_IP, 'HTTP', payload)
+      if line.match($nmapScan)
+        raiseAlarm('NMAP scan is detected', source_IP, , )
+      elsif line.match($shellCode)
+        raiseAlarm('Shellcode is detected', source_IP, , )
+      end
+    end
+  end
 end
 
 def raiseAlarm(attack, source_IP, protocol, payload)
   puts " #{$alarm_instance_number}. ALERT: #{attack} from #{source_IP} (#{protocol}) (#{payload})!"
   $alarm_instance_number += 1
+end
+
+''' ~~~~~~~~~~ Main() ~~~~~~~~~~ '''
+# read in a web server log instead of live network packets if -r flag is provided
+opts = Slop.parse do
+  banner 'Usage: alarm.rb [options]'
+  on 'r=', 'web_server', 'Read Web Server Log'
+end
+
+# if the -r flag was provided
+if opts.web_server?
+  # web_server_file = opts[:web_server]
+  puts "Running with web server log"
+  analyzeWebServerLog(opts[:web_server])
+else
+  puts "Running live network traffic"
+  analyzeLiveNetworkTraffic()
 end
 
 #pkt_array.show_live(:filter => 'tcp[tcpflags] & (tcp-push & tcp-fin & tcp-urg) == (tcp-push & tcp-fin & tcp-urg)')
