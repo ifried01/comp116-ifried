@@ -52,21 +52,19 @@ def analyzeWebServerLog(log_file)
       line_contents = line.strip.split(' ')
       payload       = line.strip.split('"')[1]
       source_IP     = line_contents[0]
-      #if line.match($HTTP400Err)
-      #  raiseAlarm('HTTP error is detected', source_IP, 'HTTP', payload)
-      #if line.match($nmapScan)
-      #  puts line
-        #raiseAlarm('NMAP scan is detected', source_IP, , )
-      if line.match($shellCode)
-        puts line
-        #raiseAlarm('Shellcode is detected', source_IP, , )
+      if line.match($HTTP400Err)
+        raiseAlarm('HTTP error is detected', source_IP, 'HTTP', payload)
+      if line.match($nmapScan)
+        raiseAlarm('NMAP scan is detected', source_IP, 'SOCKS', )
+      if payload.match($shellCode)
+        raiseAlarm('Shellcode is detected', source_IP, , )
       end
     end
   end
 end
 
 def raiseAlarm(attack, source_IP, protocol, payload)
-  puts " #{$alarm_instance_number}. ALERT: #{attack} from #{source_IP} (#{protocol}) (#{payload})!"
+  puts " #{$alarm_instance_number}. ALERT: #{attack} from #{source_IP} (#{protocol}) (\"#{payload}\")!"
   $alarm_instance_number += 1
 end
 
