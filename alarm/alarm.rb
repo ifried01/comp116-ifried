@@ -9,14 +9,14 @@ require 'packetfu'
 require 'Slop'
 
 # regex for visa, mastercard, dicover card, and american Express credit cards
-$visa        = '/4\d{3}(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}/'
-$master      = '/5\d{3}(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}/'
-$discover    = '/6011(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}/'
-$americanExp = '/3\d{3}(\s|-)?\d{6}(\s|-)?\d{5}/'
+$visa        = /4\d{3}(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}/
+$master      = /5\d{3}(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}/
+$discover    = /6011(\s|-)?\d{4}(\s|-)?\d{4}(\s|-)?\d{4}/
+$americanExp = /3\d{3}(\s|-)?\d{6}(\s|-)?\d{5}/
 # regex for HTTP 400-499 errors, nmap scans, and Shellcodes
 $HTTP400Err  = 'HTTP\/1.1" 4[0-9][0-9]'
 $nmapScan    = 'Nmap'
-$shellCode   = ''
+$shellCode   = /(\\x\h\h)+/
 # keeps track of how many alerts we have seen (used in raiseAlarm)
 $alarm_instance_number = 1
 
@@ -52,12 +52,14 @@ def analyzeWebServerLog(log_file)
       line_contents = line.strip.split(' ')
       payload       = line.strip.split('"')[1]
       source_IP     = line_contents[0]
-      if line.match($HTTP400Err)
-        raiseAlarm('HTTP error is detected', source_IP, 'HTTP', payload)
-      if line.match($nmapScan)
-        raiseAlarm('NMAP scan is detected', source_IP, , )
-      elsif line.match($shellCode)
-        raiseAlarm('Shellcode is detected', source_IP, , )
+      #if line.match($HTTP400Err)
+      #  raiseAlarm('HTTP error is detected', source_IP, 'HTTP', payload)
+      #if line.match($nmapScan)
+      #  puts line
+        #raiseAlarm('NMAP scan is detected', source_IP, , )
+      if line.match($shellCode)
+        puts line
+        #raiseAlarm('Shellcode is detected', source_IP, , )
       end
     end
   end
