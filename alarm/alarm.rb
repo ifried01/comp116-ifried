@@ -6,7 +6,7 @@ Assignment 2 - Alarm
 '''
 
 require 'packetfu'
-require 'Slop'
+require 'slop'
 require 'base64'
 
 # regex for visa, mastercard, dicover card, and american Express credit cards
