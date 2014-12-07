@@ -41,6 +41,9 @@ Part 2
     These were found in /etc.
     We also found:
      - Nmap
+     - Aircrack-ng
+     - Hydra
+     and a lot of other Kali applications.
     These were found in /usr/share/applications.
 	We determined this by looking through the Autopsy GUI.
 
@@ -53,7 +56,7 @@ Part 2
      judas
      stefani
      These were found in /home.
-     Their passwords are 'iloveyou' for stefani, '00000000' for judas, and '___???' for alejandro.
+     Their passwords are 'iloveyou' for stefani, '00000000' for judas, and we could not crack the password for for alejandro.
      We found these passwords by:
       1) taking the etc/shadow and etc/passwd files and unshadowing them.
       2) passing the unshadowed file to john the ripper.
