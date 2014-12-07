@@ -22,6 +22,8 @@ Part 2
 
 2. We do not believe that there is a phone carrier involved. We have found a file containing a list of mobile broadband providers
    "mobile-broadband-provider-info" in /usr/share and .mp3 files titled "ringtone" and "Phone.wav" inside the "Audio" folder provided by Autopsy, but there seems to be no direct reference to a single provider.
+   In the Windows disk there is a file 'LICENCE.broadcom', and the Broadcom company is a service provider, but not necessarily to phones.
+   The file seems to be intended for a Raspberry Pi device.
 
 3. The operating system is Kali Linux and the version number is 1.0.9. We determined this information from the file etc/debian_version.
 
@@ -56,10 +58,11 @@ Part 2
      judas
      stefani
      These were found in /home.
-     Their passwords are 'iloveyou' for stefani, '00000000' for judas, and we could not crack the password for for alejandro.
+     Their passwords are 'iloveyou' for stefani, '00000000' for judas, and 'pokerface' for alejandro.
      We found these passwords by:
       1) taking the etc/shadow and etc/passwd files and unshadowing them.
       2) passing the unshadowed file to john the ripper.
+     The password 'pokerface' was found using a self-made wordlist of Lady Gaga song titles and her legal name.
 
 7. Some of the incriminating evidence we found includes:
     - Photos of Lady Gaga (found in the user account 'stefani').
